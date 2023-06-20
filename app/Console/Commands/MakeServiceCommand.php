@@ -6,8 +6,9 @@ use Illuminate\Console\Command;
 use Illuminate\Support\Pluralizer;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Artisan;
 
-class MakeRepositoryCommand extends Command
+class MakeServiceCommand extends Command
 {
     /**
      * Filesystem instance
@@ -31,14 +32,14 @@ class MakeRepositoryCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'make:repository {name}';
+    protected $signature = 'make:service {name}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create new repository class';
+    protected $description = 'Create new service class';
 
     /**
      * Execute the console command.
@@ -59,14 +60,23 @@ class MakeRepositoryCommand extends Command
             $this->files->put($pathInterface, $contentsInterface);
             $this->info("File : {$pathInterface} created");
         } else {
-            $this->info("File : {$pathInterface} already exits");
+            $this->error("File : {$pathInterface} already exits");
         }
 
         if (!$this->files->exists($path)) {
             $this->files->put($path, $contents);
             $this->info("File : {$path} created");
         } else {
-            $this->info("File : {$path} already exits");
+            $this->error("File : {$path} already exits");
+        }
+
+        // call artisan
+        if ($this->files->exists($path) || $this->files->exists($pathInterface)) {
+            $name = $this->getSingularClassName($this->argument('name'));
+
+            Artisan::call("make:request Create{$name}Request");
+            Artisan::call("make:request Update{$name}Request");
+            Artisan::call("make:resource {$name}Resource");
         }
     }
 
@@ -88,7 +98,7 @@ class MakeRepositoryCommand extends Command
      */
     public function getStubPathInterface()
     {
-        return base_path('stubs/repository_interface.stub');
+        return base_path('stubs/service_interface.stub');
     }
     
     /**
@@ -98,7 +108,7 @@ class MakeRepositoryCommand extends Command
      */
     public function getStubPath()
     {
-        return base_path('stubs/repository.stub');
+        return base_path('stubs/service.stub');
     }
 
     /**
@@ -127,7 +137,7 @@ class MakeRepositoryCommand extends Command
         $name = $this->getSingularClassName($this->argument('name'));
 
         return [
-            'NAMESPACE' => 'App\\Repositories',
+            'NAMESPACE' => 'App\\Services',
             'CLASS_NAME' => $name,
             'MODEL' => $name,
         ];
@@ -162,7 +172,7 @@ class MakeRepositoryCommand extends Command
      */
     public function getSourceFilePathInterface()
     {
-        return base_path('App/Interfaces') . DIRECTORY_SEPARATOR . $this->getSingularClassName($this->argument('name')) . 'RepositoryInterface.php';
+        return base_path('App/Interfaces') . DIRECTORY_SEPARATOR . $this->getSingularClassName($this->argument('name')) . 'ServiceInterface.php';
     }
     
     /**
@@ -172,7 +182,7 @@ class MakeRepositoryCommand extends Command
      */
     public function getSourceFilePath()
     {
-        return base_path('App/Repositories') . DIRECTORY_SEPARATOR . $this->getSingularClassName($this->argument('name')) . 'Repository.php';
+        return base_path('App/Services') . DIRECTORY_SEPARATOR . $this->getSingularClassName($this->argument('name')) . 'Service.php';
     }
 
     /**

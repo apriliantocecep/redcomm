@@ -1,0 +1,60 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Repositories\$CLASS_NAME$Repository;
+use App\Http\Resources\$MODEL$Resource;
+use App\Http\Requests\Create$MODEL$Request;
+use App\Http\Requests\Update$MODEL$Request;
+
+class $CLASS_NAME$Service implements \App\Interfaces\$CLASS_NAME$ServiceInterface
+{
+    private $repository;
+
+    public function __construct()
+    {
+        $this->repository = new $CLASS_NAME$Repository();
+    }
+
+    public function create(Create$MODEL$Request $request) :$MODEL$Resource
+    {
+        $data = $this->repository->create($request->toArray());
+
+        $resource = new $MODEL$Resource($data);
+
+        return $resource;
+    }
+
+    public function update(Update$MODEL$Request $request, $id): $MODEL$Resource
+    {
+        $data = $this->repository->update($id, $request->toArray());
+
+        $resource = new $MODEL$Resource($data);
+
+        return $resource;
+    }
+
+    public function delete($id): void
+    {
+        $this->repository->delete($id);
+    }
+
+    public function read($id): $MODEL$Resource
+    {
+        $data = $this->repository->findById($id);
+
+        $resource = new $MODEL$Resource($data);
+
+        return $resource;
+    }
+
+    public function all() :\Illuminate\Database\Eloquent\Collection|static
+    {
+        $collections = $this->repository->all();
+        $collections->transform(function($collection) {
+            return new $MODEL$Resource($collection);
+        });
+
+        return $collections;
+    }
+}

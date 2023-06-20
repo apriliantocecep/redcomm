@@ -1,0 +1,16 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Http\Requests\Create$MODEL$Request;
+use App\Http\Requests\Update$MODEL$Request;
+use App\Http\Resources\$MODEL$Resource;
+
+interface $CLASS_NAME$ServiceInterface
+{
+    public function create(Create$MODEL$Request $request) :$MODEL$Resource;
+    public function read($id) :$MODEL$Resource;
+    public function update(Update$MODEL$Request $request, $id) :$MODEL$Resource;
+    public function delete($id) :void;
+    public function all() :\Illuminate\Database\Eloquent\Collection|static;
+}
