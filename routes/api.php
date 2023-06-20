@@ -32,4 +32,9 @@ Route::group([
         // Profile
         Route::get('/profile', [\App\Http\Controllers\API\AuthController::class, 'profile']);
     });
+
+    Route::resources([
+        // Brand
+        'brand' => \App\Http\Controllers\API\BrandController::class,
+    ]);
 });
