@@ -1,0 +1,14 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Models\$MODEL$;
+
+interface $CLASS_NAME$RepositoryInterface
+{
+    public function all() :\Illuminate\Database\Eloquent\Collection|static;
+    public function findById($id) :$MODEL$;
+    public function create(array $data) :$MODEL$;
+    public function update($id, array $data) :$MODEL$;
+    public function delete($id) :void;
+}

@@ -1,0 +1,44 @@
+<?php
+
+namespace $NAMESPACE$;
+
+use App\Models\$MODEL$;
+
+class $CLASS_NAME$Repository implements \App\Interfaces\$CLASS_NAME$RepositoryInterface
+{
+    public function all() :\Illuminate\Database\Eloquent\Collection|static
+    {
+        return $MODEL$::all();
+    }
+
+    public function findById($id) :$MODEL$
+    {
+        $data = $MODEL$::find($id);
+
+        if (!$data) {
+            throw new \Exception("$MODEL$ not found", 1);
+        }
+
+        return $data;
+    }
+
+    public function create(array $data) :$MODEL$
+    {
+        return $MODEL$::create($data);
+    }
+
+    public function update($id, array $data) :$MODEL$
+    {
+        $model = $this->findById($id);
+        $model->update($data);
+
+        return $model;
+    }
+
+    public function delete($id) :void
+    {
+        $this->findById($id);
+
+        $MODEL$::destroy($id);
+    }
+}
