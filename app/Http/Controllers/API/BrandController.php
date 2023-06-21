@@ -5,6 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Helper\ResponseHelper;
+use App\Http\Requests\CreateBrandRequest;
+use App\Http\Requests\UpdateBrandRequest;
+use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
 {
@@ -43,9 +46,22 @@ class BrandController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(CreateBrandRequest $request)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $data = $this->service->create($request);
+
+            DB::commit();
+            return ResponseHelper::ok($data);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return ResponseHelper::error([
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
@@ -53,7 +69,16 @@ class BrandController extends Controller
      */
     public function show(string $id)
     {
-        //
+        try {
+            $kendaraan = $this->service->read($id);
+
+            return ResponseHelper::ok($kendaraan);
+        } catch (\Exception $e) {
+
+            return ResponseHelper::error([
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
@@ -67,9 +92,22 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateBrandRequest $request, string $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $data = $this->service->update($request, $id);
+
+            DB::commit();
+            return ResponseHelper::ok($data);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return ResponseHelper::error([
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
@@ -77,6 +115,21 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        DB::beginTransaction();
+
+        try {
+            $this->service->delete($id);
+
+            DB::commit();
+            return ResponseHelper::ok([
+                'message' => 'Selected brand has been deleted',
+            ]);
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            return ResponseHelper::error([
+                'message' => $e->getMessage(),
+            ]);
+        }
     }
 }

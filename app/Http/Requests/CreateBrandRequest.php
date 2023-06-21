@@ -11,7 +11,7 @@ class CreateBrandRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,27 @@ class CreateBrandRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => [
+                'required',
+                'min:3'
+            ],
+            'description' => [
+                'required',
+                'min:3'
+            ]
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        $content = [
+            'error' => true,
+            'data' => [
+                'message' => $validator->errors()->first(),
+            ]
+        ];
+
+        $response = new \Illuminate\Http\Response($content, 422);
+        throw new \Illuminate\Validation\ValidationException($validator, $response);
     }
 }
