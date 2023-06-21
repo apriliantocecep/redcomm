@@ -7,6 +7,7 @@ use Throwable;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use App\Helper\ResponseHelper;
 
 class Handler extends ExceptionHandler
@@ -46,6 +47,14 @@ class Handler extends ExceptionHandler
                     'message' => $e->getMessage(),
                 ]);
                 // throw new \App\Exceptions\CustomAuthorizationException;
+            }
+        });
+        
+        $this->renderable(function (MethodNotAllowedHttpException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return ResponseHelper::error([
+                    'message' => $e->getMessage(),
+                ]);
             }
         });
     }
