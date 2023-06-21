@@ -49,7 +49,7 @@ class AuthController extends Controller
     public function profile()
     {
         return \App\Helper\ResponseHelper::ok([
-            'user' => auth('api')->user(),
+            'user' => new \App\Http\Resources\UserResource(auth('api')->user()),
         ]);
     }
 }
