@@ -70,9 +70,9 @@ class BrandController extends Controller
     public function show(string $id)
     {
         try {
-            $kendaraan = $this->service->read($id);
+            $collection = $this->service->read($id);
 
-            return ResponseHelper::ok($kendaraan);
+            return ResponseHelper::ok($collection);
         } catch (\Exception $e) {
 
             return ResponseHelper::error([

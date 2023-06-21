@@ -33,8 +33,12 @@ Route::group([
         Route::get('/profile', [\App\Http\Controllers\API\AuthController::class, 'profile']);
     });
 
-    Route::resources([
-        // Brand
-        'brand' => \App\Http\Controllers\API\BrandController::class,
+    // Brand
+    Route::resource('brand', \App\Http\Controllers\API\BrandController::class);
+    
+    // Car
+    Route::post('car/{car}', [\App\Http\Controllers\API\CarsController::class, 'update']);
+    Route::resource('car', \App\Http\Controllers\API\CarsController::class)->except([
+        'update'
     ]);
 });
