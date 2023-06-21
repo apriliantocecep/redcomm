@@ -39,6 +39,21 @@ DB_USERNAME=root
 DB_PASSWORD=admin
 ```
 
+### Database Testing
+
+Setting up the database for testing. Create a `test.sqlite` file in the `database` folder. 
+
+This file will be used to interact with our testing database and maintain a separate configuration from the main database. Next, replace the database environment variables from `.env.testing` file.
+
+```
+DB_CONNECTION=sqlite
+DB_HOST=null
+DB_PORT=null
+DB_DATABASE=database/test.sqlite
+DB_USERNAME=null
+DB_PASSWORD=null
+```
+
 ### App Url
 
 Adjust the application url, if you are using artisan `serve`, use this url

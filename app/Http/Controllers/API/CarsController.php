@@ -184,7 +184,7 @@ class CarsController extends Controller
 
             DB::commit();
             return ResponseHelper::ok([
-                'message' => 'Selected brand has been deleted',
+                'message' => 'Selected car has been deleted',
             ]);
         } catch (\Exception $e) {
             DB::rollBack();
