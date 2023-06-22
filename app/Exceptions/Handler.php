@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Illuminate\Http\Exceptions\ThrottleRequestsException;
 use App\Helper\ResponseHelper;
 
 class Handler extends ExceptionHandler
@@ -45,7 +46,7 @@ class Handler extends ExceptionHandler
             if ($request->is('api/*')) {
                 return ResponseHelper::error([
                     'message' => $e->getMessage(),
-                ]);
+                ], $e->getStatusCode());
                 // throw new \App\Exceptions\CustomAuthorizationException;
             }
         });
@@ -54,7 +55,15 @@ class Handler extends ExceptionHandler
             if ($request->is('api/*')) {
                 return ResponseHelper::error([
                     'message' => $e->getMessage(),
-                ]);
+                ], $e->getStatusCode());
+            }
+        });
+        
+        $this->renderable(function (ThrottleRequestsException $e, Request $request) {
+            if ($request->is('api/*')) {
+                return ResponseHelper::error([
+                    'message' => $e->getMessage(),
+                ], $e->getStatusCode());
             }
         });
     }
