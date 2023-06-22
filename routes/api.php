@@ -26,7 +26,7 @@ Route::prefix('auth')->group(function() {
 });
 
 Route::group([
-    'middleware' => 'auth:api,throttle:api',
+    'middleware' => ['auth:api', 'throttle:api'],
 ], function() {
     Route::prefix('user')->group(function() {
         // Profile
