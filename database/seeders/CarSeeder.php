@@ -13,5 +13,6 @@ class CarSeeder extends Seeder
     public function run(): void
     {
         //
+        \App\Models\Car::factory(10)->create();
     }
 }
