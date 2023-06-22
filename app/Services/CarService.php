@@ -11,9 +11,9 @@ class CarService implements \App\Interfaces\CarServiceInterface
 {
     private $repository;
 
-    public function __construct()
+    public function __construct(CarRepository $repository)
     {
-        $this->repository = new CarRepository();
+        $this->repository = $repository;
     }
 
     public function create(CreateCarRequest $request) :CarResource

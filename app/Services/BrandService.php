@@ -11,9 +11,9 @@ class BrandService implements \App\Interfaces\BrandServiceInterface
 {
     private $repository;
 
-    public function __construct()
+    public function __construct(BrandRepository $repository)
     {
-        $this->repository = new BrandRepository();
+        $this->repository = $repository;
     }
 
     public function create(CreateBrandRequest $request) :BrandResource

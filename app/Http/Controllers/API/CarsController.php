@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use App\Helper\ResponseHelper;
 use App\Http\Requests\CreateCarRequest;
 use App\Http\Requests\UpdateCarRequest;
+use App\Repositories\CarRepository;
+use App\Repositories\PhotoRepository;
 use Illuminate\Support\Facades\DB;
 
 class CarsController extends Controller
@@ -19,8 +21,8 @@ class CarsController extends Controller
     {
         $this->authorizeResource(\App\Models\Car::class, 'car');
 
-        $this->service = new \App\Services\CarService();
-        $this->servicePhoto = new \App\Services\PhotoService();
+        $this->service = new \App\Services\CarService(new CarRepository);
+        $this->servicePhoto = new \App\Services\PhotoService(new PhotoRepository);
     }
 
     /**

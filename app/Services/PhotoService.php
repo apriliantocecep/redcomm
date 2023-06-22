@@ -11,9 +11,9 @@ class PhotoService implements \App\Interfaces\PhotoServiceInterface
 {
     private $repository;
 
-    public function __construct()
+    public function __construct(PhotoRepository $repository)
     {
-        $this->repository = new PhotoRepository();
+        $this->repository = $repository;
     }
 
     public function create(CreatePhotoRequest $request) :PhotoResource

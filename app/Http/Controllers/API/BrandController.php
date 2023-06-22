@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Helper\ResponseHelper;
 use App\Http\Requests\CreateBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
+use App\Repositories\BrandRepository;
 use Illuminate\Support\Facades\DB;
 
 class BrandController extends Controller
@@ -15,7 +16,7 @@ class BrandController extends Controller
 
     public function __construct()
     {
-        $this->service = new \App\Services\BrandService();
+        $this->service = new \App\Services\BrandService(new BrandRepository);
     }
 
     /**
