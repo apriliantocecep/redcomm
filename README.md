@@ -9,8 +9,8 @@ Using JWT for Authorization.
 - Clone this project
 - cd path/to/your/project
 - cp .env.example .env
-- composer install
 - make some changes in .env file. like: database settings and APP_URL
+- composer install
 - php artisan key:generate
 - php artisan migrate:fresh --seed
 
